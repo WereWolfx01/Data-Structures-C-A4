@@ -7,7 +7,7 @@ E-mail: aabdulmu@uoguelph.ca
 
 #include "a4.h"
 
-int pow1( int base, int exp ){
+int pow1( int base, int exp ){ /*alternate version of pow() to avoid compiler issues*/
   int result = base;
 
   if(exp == 1){
@@ -45,8 +45,7 @@ int hash1( char *s, int max ){
 int hash2( char *s, int max ){
   char *c;
   unsigned long result;
-  int i;
-  int j;
+  int i, j;
 
   result = 0;
   i = 1;
@@ -64,19 +63,27 @@ int hash2( char *s, int max ){
 
 
 int hash3( char *s, int max ){
+  int numMonths, numDays, numYear;
+  unsigned long result;
   int dayspermonth[] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-  int numMonths = atoi(s);
-  int numDays = atoi(s+3);
-  int numYear = atoi(s+6);
-  int result = 0;
-  if(numMonths){
-  numMonths--;
-  while( numMonths != 0 ){
-    result += dayspermonth[numMonths];
-    numMonths--;
+
+  if(s == NULL){
+    return 0;
   }
-  result += numDays;
-  result += ((numYear - 1900) * 366); /*1900 was the lowest year in the file, each year has its own 366 indexes in hash map*/
+
+  numMonths = atoi(s);
+  numDays = atoi(s+3);
+  numYear = atoi(s+6);
+  result = 0;
+
+  if(numMonths){
+    numMonths--;
+    while( numMonths != 0 ){
+      result += dayspermonth[numMonths];
+      numMonths--;
+    }
+    result += numDays;
+    result += ((numYear - 1900) * 366); /*1900 was the lowest year in the file, each year has its own 366 indexes in hash map*/
   }
 
   /*some years have februray with 29 days so 366 days a year*/
